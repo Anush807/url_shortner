@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+body {
+  @apply font-sans bg-[#fdfdfd] text-gray-900;
+}

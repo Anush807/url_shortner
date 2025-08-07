@@ -4,7 +4,7 @@ const URL = require("../model/urlSchema");
 const handleUrl = async (req, res) => {
     const body = req.body;
     if(!body.url){
-        return res.status(401).json({
+        return res.status(400).json({
            message: "No url found"
     });
     }
@@ -17,10 +17,10 @@ const handleUrl = async (req, res) => {
     message: shortUrl
 })
 
+res.json({
+    message: shortUrl
+})
 }
-
-
-
 
 module.exports = {
     handleUrl
