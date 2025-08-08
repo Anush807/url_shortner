@@ -4,10 +4,19 @@ import './index.css'
 import App from './App.jsx'
 import React from 'react'
 import "@fontsource/inter"; // Uses variable font weights
+import { ClerkProvider } from '@clerk/clerk-react'
+import { BrowserRouter, Routes, Route } from 'react-router'
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+if (!PUBLISHABLE_KEY) {
+  throw new Error('Missing Publishable Key')
+}
 
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <App />
+      <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+        <App></App>
+      </ClerkProvider>
   </StrictMode>,
 )
