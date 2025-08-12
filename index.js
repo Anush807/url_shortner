@@ -5,15 +5,17 @@ const app = express();
 const PORT = process.env.PORT;
 const url = require("./routes/urlHandler"); 
 const cors = require("cors");
+const MONGO_URI = process.env.MONGO_URI;
+const FRONTEND_URI = process.env.FRONTEND_URI;
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', // or use "*" to allow all origins (not recommended for production)
+  origin: FRONTEND_URI, // or use "*" to allow all origins (not recommended for production)
   credentials: true               // if you're using cookies or sessions
 }));
 
 
-handleDatabaseConnection("mongodb+srv://anushpoojary0101:Anush8073@cluster0.uxmka.mongodb.net/url-shortner");
+handleDatabaseConnection(MONGO_URI);
 app.use(express.json());
 
 app.use("/", url);
