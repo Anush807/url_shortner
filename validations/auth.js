@@ -1,6 +1,6 @@
-import { z } from "zod";
+const { z } = require("zod");
 
-export const authZodSchema = z.object({
+ const authZodSchema = z.object({
   userName: z
     .string()
     .min(1, { message: "Username is required" }) // non-empty
@@ -9,3 +9,7 @@ export const authZodSchema = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters long" }) // security measure
 });
+
+module.exports = {
+  authZodSchema
+}

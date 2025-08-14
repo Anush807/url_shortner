@@ -10,6 +10,7 @@ import CreateLinkCard from './components/CreateLinkCard'
 import Dashboard from './pages/Dashboard'
 import SignInPage from './pages/SignIn'
 import SignUpPage from './pages/SignUp'
+import Protected  from './Protected'
 
 function App() {
   return (
@@ -26,11 +27,15 @@ function App() {
             <SignInPage></SignInPage>
             }
           />
-        
           <Route
             path="/dashboard"
             element={
-                <Dashboard />}
+              <Protected>
+                <Dashboard />
+              </Protected>
+                
+              
+              }
           />
         </Routes>
       </BrowserRouter>

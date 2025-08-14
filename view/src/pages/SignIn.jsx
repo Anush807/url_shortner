@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 function SignInPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    email: "",
+    userName: "",
     password: "",
   });
 
@@ -15,16 +18,44 @@ function SignInPage() {
     setSuccess("");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Placeholder: Add your sign-in logic here (API call)
-    if (!formData.email || !formData.password) {
-      setError("Please enter both email and password.");
-      return;
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  setError("");
+  setSuccess("");
+
+  if (!formData.userName || !formData.password) {
+    setError("Please enter both username and password.");
+    return;
+  }
+
+  axios.post("http://localhost:5000/auth/signin", {
+    userName: formData.userName,
+    password: formData.password,
+  })
+  .then((res) => {
+    setSuccess(res.data.message || "Sign-in successful!");
+
+    // Store JWT token if available
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token);
     }
-    // Simulate success
-    setSuccess("Sign-in successful!");
-  };
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+
+  })
+  .catch((err) => {
+    if (err.response && err.response.data && err.response.data.message) {
+      setError(err.response.data.message);
+    } else {
+      setError("Something went wrong. Please try again.");
+    }
+    console.error(err);
+  });
+};
+
+
 
   return (
     <div
@@ -59,11 +90,11 @@ function SignInPage() {
           Email Address
         </label>
         <input
-          type="email"
-          id="email"
-          name="email"
+          type="text"
+          id="userName"
+          name="userName"
           required
-          value={formData.email}
+          value={formData.userName}
           onChange={handleChange}
           placeholder="you@example.com"
           style={{
