@@ -1,10 +1,12 @@
 const { authZodSchema } = require("../validations/auth");
 const userAuth = require("../model/authSchema");
 const jwt = require("jsonwebtoken");
+const argon2 = require('argon2');
+
+
 
 const authController = async (req, res) => {
     const { userName, password } = req.body;
-
     try {
         const parsedData = authZodSchema.safeParse({ userName, password });
 
@@ -20,7 +22,16 @@ const authController = async (req, res) => {
 
         const dbpassword = user.password;
 
-        if (dbpassword !== password) {
+        async function verifyPassword(dbpassword, password) {
+  try {
+    const match = await argon2.verify(dbpassword, password);
+    return match; // true or false
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+        if (!verifyPassword(dbpassword, password)) {
             return res.status(401).json({ message: "Invalid password" });
         }
 

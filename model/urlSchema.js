@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 
 
 const urlSchema = new mongoose.Schema({
-        userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Auth",
-        required: true
-    },
+
     originalUrl:
     {
         type: String,
@@ -14,12 +10,14 @@ const urlSchema = new mongoose.Schema({
 
     },
 
-    shorturl:{
+    shorturl: {
         type: String,
         required: true,
         unique: true
-    }
-})
+    },
+},
+)
+
 
 
 const urlScheme = mongoose.model("url", urlSchema);

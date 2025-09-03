@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
-import CreateLinkCard from "../components/CreateLinkCard";
+import AuthenticatedCreateLinkCard from "../components/AuthenticatedCreateLinkCard";
 import ManageSettingsCard from "../components/ManageSettings";
 
 
@@ -10,13 +10,15 @@ function Dashboard() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [username, setUsername] = useState("User");
   const [showManageSettings, setShowManageSettings] = useState(false);
+  const [links, setLinks] = useState([]);
+   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
   const menuRef = useRef();
-
+const token = localStorage.getItem("token");
   // Fetch username from backend or localStorage
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    
     if (token) {
       axios
         .get("http://localhost:5000/dashboard/user-information", {
@@ -42,6 +44,26 @@ function Dashboard() {
     localStorage.removeItem("token");
     window.location.href = "/signin";
   };
+
+     useEffect(() => {
+    axios
+      .get("http://localhost:5000/dashboard/user-information",{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+      }) // backend API
+      .then((res) => {
+        setLinks(res.data.urls || []); // use the urls array from backend
+      })
+      .catch((err) => {
+        console.error("Error fetching links:", err);
+      });
+  }, []);
+    // Check for token when component mounts
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#f9f9f9] px-8 py-8 relative">
@@ -89,66 +111,70 @@ function Dashboard() {
         </div>
       </header>
 
-      {/* MAIN */}
-      <main>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <section className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-lg font-semibold text-[#222] mb-2">
-              Your Links
-            </h2>
-            <div className="mt-2 mb-4 text-gray-500">
-              All your shortened links, stats, and actions in one place.
-            </div>
-            <button
-              onClick={() => setShowCreateLink(true)}
-              className="btn btn-neutral flex items-center gap-2"
-            >
-              <LinkIcon className="w-5 h-5" />
-              Create New Link
-            </button>
-            <div>
-              {showCreateLink && (
-                <CreateLinkCard onClose={() => setShowCreateLink(false)} />
-              )}
-            </div>
-            <div className="pt-6">
-              <ul>
-                <li className="flex items-center justify-between py-2 border-b border-[#f0f0f0]">
-                  <span className="truncate text-[#222]">link.li/abc12345</span>
-                  <span className="text-xs text-gray-500">256 clicks</span>
-                </li>
-                <li className="flex items-center justify-between py-2 border-b border-[#f0f0f0]">
-                  <span className="truncate text-[#222]">link.li/xyz9876</span>
-                  <span className="text-xs text-gray-500">98 clicks</span>
-                </li>
-              </ul>
-            </div>
-          </section>
+       <main>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* YOUR LINKS */}
+        <section className="bg-white rounded-xl shadow-md p-6">
+          <h2 className="text-lg font-semibold text-[#222] mb-2">Your Links</h2>
+          <div className="mt-2 mb-4 text-gray-500">
+            All your shortened links, stats, and actions in one place.
+          </div>
+          <button
+            onClick={() => setShowCreateLink(true)}
+            className="btn btn-neutral flex items-center gap-2"
+          >
+            <LinkIcon className="w-5 h-5" />
+            Create New Link
+          </button>
+          <div>
+            {showCreateLink && (
+              <AuthenticatedCreateLinkCard onClose={() => setShowCreateLink(false)} />
+            )}
+          </div>
 
-          <section className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between">
-            <div>
-              <h2 className="text-lg font-semibold text-[#222] mb-2">
-                Recent Activity
-              </h2>
-              <ul className="space-y-2">
-                <li className="text-gray-700">
+          <div className="pt-6">
+            <ul>
+              {links.map((link) => (
+                <li
+                  key={link.shorturl}
+                  className="flex items-center justify-between py-2 border-b border-[#f0f0f0]"
+                >
+                  <span className="truncate text-[#222]">
+                    link.li/{link.shorturl}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {link.clicks} clicks
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* RECENT ACTIVITY */}
+        <section className="bg-white rounded-xl shadow-md p-6 flex flex-col justify-between">
+          <div>
+            <h2 className="text-lg font-semibold text-[#222] mb-2">
+              Recent Activity
+            </h2>
+            <ul className="space-y-2">
+              {links.slice(0, 5).map((link) => (
+                <li key={link.shortId} className="text-gray-700">
                   You created{" "}
-                  <span className="font-medium text-[#222]">/abc12345</span> ·
-                  1hr ago
+                  <span className="font-medium text-[#222]">
+                    /{link.shortId}
+                  </span>{" "}
+                  · {new Date(link.createdAt).toLocaleString()}
                 </li>
-                <li className="text-gray-700">
-                  Someone clicked{" "}
-                  <span className="font-medium text-[#222]">/xyz9876</span> ·
-                  34min ago
-                </li>
-              </ul>
-            </div>
-            <div className="mt-6 flex justify-end">
-              <button className="btn btn-neutral btn-outline">View More</button>
-            </div>
-          </section>
-        </div>
-      </main>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-6 flex justify-end">
+            <button className="btn btn-neutral btn-outline">View More</button>
+          </div>
+        </section>
+      </div>
+    </main>
       {showManageSettings && (
         <ManageSettingsCard
           onClose={() => setShowManageSettings(false)}

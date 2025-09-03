@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios"; // Don't forget to import axios
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "motion/react"
 function SignUpPage() {
   const navigate = useNavigate();
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const [formData, setFormData] = useState({
     userName: "",
     password: "",

@@ -3,23 +3,30 @@ import React, { useState } from 'react'
 import { LinkIcon } from '@heroicons/react/24/outline';
 import { Copy, Check } from 'lucide-react';
 
-function CreateLinkCard( { onClose } ) {
+function AuthenticatedCreateLinkCard( { onClose } ) {
     const [originalUrl, setOriginalUrl] = useState("");
     const [shortUrl, setShortUrl] = useState("");
      const [copied, setCopied] = useState(false);
     const handleClick = () =>{
-        axios.post('http://localhost:5000/url', { url : originalUrl  })
+       const token = localStorage.getItem("token");
+        axios.post('http://localhost:5000/dashboard/generatelink', 
+            { url : originalUrl  },
+{
+    headers: {
+        Authorization: `Bearer ${token}`, // attach token here
+      },}
+            )
   .then(response => {
     // success handler
-    const shortUrl = response.data.message;
-    setShortUrl("http://localhost:5000/"+shortUrl)
+    const shortUrl = response.data.shortUrl;
+    setShortUrl("http://localhost:5000/s/"+shortUrl)
   })
   .catch(error => {
     // error handler
     console.error('Error:', error);
   });
   
-
+  
     }
     const handleCopy = async () => {
     try {
@@ -77,4 +84,4 @@ function CreateLinkCard( { onClose } ) {
   )
 }
 
-export default CreateLinkCard
+export default AuthenticatedCreateLinkCard

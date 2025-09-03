@@ -9,6 +9,7 @@ const handleUrl = async (req, res) => {
     });
     }
     const shortUrl = shortid();
+    console.log("creating url")
     await URL.create({
         originalUrl: body.url,
         shorturl: shortUrl,
@@ -17,9 +18,11 @@ const handleUrl = async (req, res) => {
     message: shortUrl
 })
 
-res.json({
-    message: shortUrl
-})
+res.json(
+  {
+    message: shortUrl,
+  });
+
 }
 
 module.exports = {

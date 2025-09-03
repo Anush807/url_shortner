@@ -6,6 +6,7 @@ const PORT = process.env.PORT;
 const url = require("./routes/urlHandler"); 
 const auth = require("./routes/authRoutes");
 const dashboard = require("./routes/dashboardRoute")
+const  redirectroute  = require("./routes/redirectroute")
 const cors = require("cors");
 const MONGO_URI = process.env.MONGO_URI;
 const FRONTEND_URI = process.env.FRONTEND_URI;
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use("/", url);
 app.use("/auth", auth);
 app.use("/dashboard", dashboard)
+app.use("/s", redirectroute)
 
 
 app.listen(PORT,() => {

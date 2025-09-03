@@ -38,11 +38,16 @@ const handleSubmit = (e) => {
 
     // Store JWT token if available
     if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
-    }
-      setTimeout(() => {
-        navigate("/dashboard");
-      }, 1000);
+  localStorage.setItem("token", res.data.token);
+  setSuccess(res.data.message || "Sign-in successful!");
+
+  // navigate only if token exists
+  setTimeout(() => {
+    navigate("/dashboard");
+  }, 1000);
+} else {
+  setError("Login failed: No token received");
+}
 
   })
   .catch((err) => {
