@@ -1,8 +1,9 @@
 const { z } = require("zod");
 
  const authZodSchema = z.object({
-  userName: z
+  email: z
     .string()
+    .email()
     .min(1, { message: "Username is required" }) // non-empty
     .trim(),
   password: z

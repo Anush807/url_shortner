@@ -3,7 +3,7 @@ const userAuth = require("../model/authSchema");
 
 const generateurlController = async (req, res) => {
     try{
-    const username = req.user.userName;
+    const userEmail = req.user.email;
     const body = req.body;
     if(!body.url){
         return res.status(400).json({
@@ -11,7 +11,7 @@ const generateurlController = async (req, res) => {
     });
     }
     const shortUrl = shortid();
-    const user = await userAuth.findOne({ userName: username });
+    const user = await userAuth.findOne({ email: userEmail });
 
     user.urls.push({
       originalUrl: body.url,
@@ -27,12 +27,7 @@ const generateurlController = async (req, res) => {
      console.error(err);
     return res.status(500).json({ message: "Server error" });
 }
-  
 }
-
-
-
-
 
 module.exports = {
    generateurlController

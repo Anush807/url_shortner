@@ -1,126 +1,103 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
-function ManageSettingsCard({ onClose, currentUsername }) {
+const API_URL = "http://localhost:5000"; // adjust for deployment
+
+function ManageSettingsCard({ onClose, currentUsername, currentEmail }) {
   const [username, setUsername] = useState(currentUsername || "");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
-  const [previewPic, setPreviewPic] = useState(
-    "https://via.placeholder.com/100" // default placeholder
-  );
+  const [email, setEmail] = useState(currentEmail || "");
+  const [loading, setLoading] = useState(false);
 
-  // Preview profile picture
-  useEffect(() => {
-    if (profilePic) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPic(reader.result);
-      };
-      reader.readAsDataURL(profilePic);
+  // Send password reset email
+  const sendResetEmail = async () => {
+    try {
+      setLoading(true);
+      await axios.post(`${API_URL}/auth/request-password-change`, { email });
+      alert("Password reset link sent to your email!");
+      onClose();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to send reset link");
+    } finally {
+      setLoading(false);
     }
-  }, [profilePic]);
+  };
 
-  const handleSave = () => {
-    if (password && password !== confirmPassword) {
-      alert("Passwords do not match!");
-      return;
+  // Handle save (username/email updates only)
+  const handleSave = async () => {
+    try {
+      await axios.put(`${API_URL}/auth/update-profile`, { username, email });
+      alert("Profile updated successfully");
+      onClose();
+    } catch (err) {
+      alert("Failed to update profile");
     }
-
-    // Replace with axios PUT request to backend
-    console.log({
-      username,
-      password,
-      profilePic
-    });
-    alert("Changes saved!");
-    onClose();
   };
 
   return (
-    <div className="fixed inset-0 backdrop-blur-md bg-black/20 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-lg w-96 p-6 relative">
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 backdrop-blur-sm">
+      <div className="bg-white rounded-3xl shadow-xl w-96 p-6 relative animate-fadeIn">
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl transition-colors"
         >
           ✕
         </button>
 
-        {/* Profile picture */}
-        <div className="flex justify-center mb-4">
-          <label className="relative cursor-pointer">
-            <img
-              src={previewPic}
-              alt="Profile"
-              className="w-24 h-24 rounded-full object-cover border-4 border-gray-200"
-            />
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setProfilePic(e.target.files[0])}
-              className="hidden"
-            />
-            <span className="absolute bottom-1 right-1 bg-black text-white text-xs px-2 py-0.5 rounded-full">
-              Edit
-            </span>
-          </label>
-        </div>
-
-        <h2 className="text-xl font-bold text-center text-gray-800 mb-6">
+        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           Manage Settings
         </h2>
 
         {/* Change Username */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             Change Username
           </label>
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="input w-full bg-white border border-black"
+            className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
           />
         </div>
 
-        {/* Change Password */}
+        {/* Change Email */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Change Password
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Change Email
           </label>
           <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="input w-full bg-white border border-black"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+            placeholder="your@email.com"
           />
         </div>
 
-        {/* Confirm Password */}
+        {/* Password reset button */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="input w-full bg-white border border-black"
-          />
+          <button
+            onClick={sendResetEmail}
+            disabled={loading}
+            className="w-full px-4 py-2 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition disabled:opacity-50"
+          >
+            {loading ? "Sending..." : "Send Password Reset Email"}
+          </button>
         </div>
 
         {/* Action buttons */}
-        <div className="flex justify-end gap-2 mt-6">
+        <div className="flex justify-end gap-3 mt-6">
           <button
             onClick={onClose}
-            className="btn btn-outline btn-sm"
+            className="px-4 py-2 rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            className="btn btn-black btn-sm"
+            className="px-4 py-2 rounded-xl bg-black text-white font-semibold hover:bg-gray-800 transition"
           >
             Save Changes
           </button>
@@ -129,5 +106,4 @@ function ManageSettingsCard({ onClose, currentUsername }) {
     </div>
   );
 }
-
 export default ManageSettingsCard;

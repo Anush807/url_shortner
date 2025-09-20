@@ -2,7 +2,7 @@ const { z } = require("zod");
 
  const signUpSchema = z
   .object({
-    userName: z
+    email: z
       .string()
       .min(1, { message: "Username is required" })
       .trim(),

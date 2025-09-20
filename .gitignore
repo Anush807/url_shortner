@@ -1,5 +1,86 @@
-node_modules
-# Keep environment variables out of version control
-.env
+# ================================
+# Node modules
+# ================================
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
 
-/generated/prisma
+# ================================
+# Vite / Build outputs
+# ================================
+dist/
+.build/
+*.local
+*.log
+
+# ================================
+# Environment variables
+# ================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ================================
+# Logs
+# ================================
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ================================
+# OS generated files
+# ================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# ================================
+# IDEs and Editors
+# ================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ================================
+# Miscellaneous
+# ================================
+coverage/
+*.tgz
+*.bak
+*.tmp
+*.pid
+*.seed
+*.sqlite
+*.sqlite3
+
+# ================================
+# MacOS
+# ================================
+.AppleDouble
+.LSOverride
+
+# ================================
+# npm / yarn / pnpm caches
+# ================================
+.npm/
+.yarn/
+.pnpm-store/
+
+# ================================
+# Testing / Coverage
+# ================================
+coverage/
+*.lcov
+
+# ================================
+# React / Vite specific
+# ================================
+.vite/
+*.cache/

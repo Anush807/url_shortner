@@ -4,3 +4,9 @@
 body {
   @apply font-sans bg-[#fdfdfd] text-gray-900;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* no horizontal scrollbar ever */
+  height: 100%;       /* lock to viewport height */
+}

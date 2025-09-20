@@ -1,22 +1,17 @@
 const mongoose = require("mongoose");
 
-
 const urlSchema = new mongoose.Schema({
-
-    originalUrl:
-    {
-        type: String,
-        required: true,
-
-    },
-
-    shorturl: {
-        type: String,
-        required: true,
-        unique: true
-    },
-},
-)
+  shorturl: {
+    type: String,
+    required: true,        // ensures every document has a shorturl
+    unique: true,          // enforces uniqueness at DB level
+    trim: true
+  },
+  originalUrl: {
+    type: String,
+    required: true
+  }
+});
 
 
 

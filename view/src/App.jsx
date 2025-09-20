@@ -10,36 +10,44 @@ import CreateLinkCard from './components/CreateLinkCard'
 import Dashboard from './pages/Dashboard'
 import SignInPage from './pages/SignIn'
 import SignUpPage from './pages/SignUp'
-import Protected  from './Protected'
+import ProtectedRoute from "./Protected"
+import { AuthProvider } from './context/AuthContext'
+import RequestPasswordChangePage from './components/RequestResetPassword'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/signup' element={<SignUpPage></SignUpPage>}></Route>
-          <Route path='/' element={<div className='min-h-screen bg-[#fdfdfd] overflow-x-hidden'>
-            <MainPage></MainPage>
-          </div>}></Route>
-          <Route
-            path="/signin"
-            element={
-            <SignInPage></SignInPage>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <Protected>
-                <Dashboard />
-              </Protected>
-                
-              
+    <AuthProvider>
+      <div>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/signup' element={<SignUpPage></SignUpPage>}></Route>
+            <Route path='/' element={<div className='min-h-screen bg-[#fdfdfd] overflow-x-hidden'>
+              <MainPage></MainPage>
+            </div>}></Route>
+            <Route
+              path="/signin"
+              element={
+                <SignInPage></SignInPage>
               }
-          />
-        </Routes>
-      </BrowserRouter>
-    </div>
+            />
+            <Route
+              path="/dashboard"
+              element={
+
+                <Dashboard></Dashboard>
+
+
+              }
+            />
+            <Route path="/request-password-change" element={<RequestPasswordChangePage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </AuthProvider>
+
   )
 }
 export default App
