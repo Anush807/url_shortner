@@ -1,7 +1,6 @@
 {
   "name": "url-shortner",
   "version": "1.0.0",
-  
   "main": "index.js",
   "dependencies": {
     "accepts": "^2.0.0",
@@ -112,7 +111,7 @@
     "minimatch": "^3.1.2",
     "mongodb": "^6.18.0",
     "mongodb-connection-string-url": "^3.0.2",
-    "mongoose": "^8.18.1",
+    "mongoose": "^8.8.3",
     "mpath": "^0.9.0",
     "mquery": "^5.0.0",
     "ms": "^2.1.3",
@@ -205,6 +204,9 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
+  },
+  "engines": {
+    "node": "20.x"
   },
   "keywords": [],
   "author": "",
