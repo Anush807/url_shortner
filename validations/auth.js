@@ -1,16 +1,16 @@
-const { z } = require("zod");
+// const { z } = require("zod");
 
- const authZodSchema = z.object({
-  email: z
-    .string()
-    .email()
-    .min(1, { message: "Username is required" }) // non-empty
-    .trim(),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long" }) // security measure
-});
+//  const authZodSchema = z.object({
+//   email: z
+//     .string()
+//     .email()
+//     .min(1, { message: "Username is required" }) // non-empty
+//     .trim(),
+//   password: z
+//     .string()
+//     .min(6, { message: "Password must be at least 6 characters long" }) // security measure
+// });
 
-module.exports = {
-  authZodSchema
-}
+// module.exports = {
+//   authZodSchema
+// }

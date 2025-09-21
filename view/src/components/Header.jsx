@@ -1,20 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import ButtonComponent from "./ButtonComponent";
+
 
 function Header() {
-  const navigate = useNavigate();
-  const { user } = useAuth();
+  // const navigate = useNavigate();
+  // const { user } = useAuth();
 
-  // handle navigation for protected links
-  const handleNav = (path) => {
-    if (!user) {
-      navigate("/signin");
-    } else {
-      navigate(path);
-    }
-  };
+  // // handle navigation for protected links
+  // const handleNav = (path) => {
+  //   if (!user) {
+  //     navigate("/signin");
+  //   } else {
+  //     navigate(path);
+  //   }
+  // };
 
   return (
     <header className="w-full py-4 px-6 bg-white shadow-sm">
@@ -53,9 +51,6 @@ function Header() {
         </div> */}
 
         {/* Right button (e.g., Sign In / Profile) */}
-        <div>
-          <ButtonComponent />
-        </div>
       </div>
     </header>
   );

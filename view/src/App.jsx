@@ -4,34 +4,32 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import MainPage from "./pages/MainPage"
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import CreateLinkCard from './components/CreateLinkCard'
-import Dashboard from './pages/Dashboard'
-import SignInPage from './pages/SignIn'
-import SignUpPage from './pages/SignUp'
-import ProtectedRoute from "./Protected"
-import { AuthProvider } from './context/AuthContext'
-import RequestPasswordChangePage from './components/RequestResetPassword'
-import ResetPasswordPage from './pages/ResetPasswordPage'
+// import CreateLinkCard from './components/CreateLinkCard'
+// import Dashboard from './pages/Dashboard'
+// import SignInPage from './pages/SignIn'
+// import SignUpPage from './pages/SignUp'
+// import ProtectedRoute from "./Protected"
+// import { AuthProvider } from './context/AuthContext'
+// import RequestPasswordChangePage from './components/RequestResetPassword'
+// import ResetPasswordPage from './pages/ResetPasswordPage'
 
 function App() {
   return (
-    <AuthProvider>
       <div>
         <BrowserRouter>
           <Routes>
-            <Route path='/signup' element={<SignUpPage></SignUpPage>}></Route>
+            {/* <Route path='/signup' element={<SignUpPage></SignUpPage>}></Route> */}
             <Route path='/' element={<div className='min-h-screen bg-[#fdfdfd] overflow-x-hidden'>
               <MainPage></MainPage>
             </div>}></Route>
-            <Route
+            {/* <Route
               path="/signin"
               element={
                 <SignInPage></SignInPage>
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/dashboard"
               element={
 
@@ -39,14 +37,14 @@ function App() {
 
 
               }
-            />
-            <Route path="/request-password-change" element={<RequestPasswordChangePage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            /> */}
+            {/* <Route path="/request-password-change" element={<RequestPasswordChangePage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} /> */}
 
           </Routes>
         </BrowserRouter>
       </div>
-    </AuthProvider>
+    
 
   )
 }
