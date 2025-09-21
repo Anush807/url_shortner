@@ -8,10 +8,11 @@ const auth = require("./routes/authRoutes");
 const dashboard = require("./routes/dashboardRoute")
 const  redirectroute  = require("./routes/redirectroute")
 const cors = require("cors");
+const helmet = require("helmet");
 const MONGO_URI = process.env.MONGO_URI;
 const FRONTEND_URI = process.env.FRONTEND_URI;
 
-
+app.use(helmet());
 app.use(cors({
   origin: FRONTEND_URI, // or use "*" to allow all origins (not recommended for production)
   credentials: true               // if you're using cookies or sessions

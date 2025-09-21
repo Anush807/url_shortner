@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const argon2 = require("argon2");
 
-
 const urlSchema = new mongoose.Schema({
   originalUrl: { type: String, required: true },
   shorturl: { type: String, required: true, unique: true },
@@ -29,8 +28,23 @@ const authSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    resetToken: String,
-    resetTokenExpiry: Date,
+    passwordResetToken : String,
+    passwordResetExpires: Date,
+    tokenVersion:{
+      type: Number,
+      default: 0
+
+    },
+    role:{
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
+    },
+    isActive:{
+      type: Boolean,
+      default: true
+    },
+    lastLogin: Date,
 
     urls: [urlSchema]
   },
