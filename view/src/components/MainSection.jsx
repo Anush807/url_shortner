@@ -11,10 +11,10 @@ function MainSection() {
     if (!originalUrl.trim()) return;
 
     axios
-      .post(`${import.meta.env.REACT_APP_API_URL}/url`, { url: originalUrl })
+      .post(`${import.meta.env.VITE_API_URL}/url`, { url: originalUrl })
       .then((response) => {
         const shortUrl = response.data.message;
-        setShortUrl(`${import.meta.env.REACT_APP_API_URL}/${shortUrl}`);
+        setShortUrl(`${import.meta.env.VITE_API_URL}/${shortUrl}`);
       })
       .catch((error) => {
         console.error("Error:", error);
